@@ -6,7 +6,8 @@ cache:
   directories:
     - $HOME/.pip-cache/
 env:
-  - TOX_ENV=py26-dj14
+  - TOX_ENV=py27-dj16
+  - TOX_ENV=py33-dj16
   - TOX_ENV=py27-dj17
   - TOX_ENV=py33-dj17
 install:
