@@ -13,7 +13,7 @@ changelog = read('CHANGELOG.rst')
 
 setup(
     name='django-adminextraviews',
-    version='1.0.0',
+    version='1.1.0.dev0',
     description=__doc__,
     long_description=readme + '\n\n' + changelog,
     author='Fusionbox, Inc.',
