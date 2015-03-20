@@ -44,5 +44,6 @@ Now you can use it like a normal view, you can reverse it.
     >>> urlresolvers.reverse('admin:myapp_mymodel_login_as_user', kwargs={'pk': 12})
     '/admin/myapp/mymodel/12/login/'
 
-If your views have a ``form_class`` field, ``ExtraViewsMixin`` will wrap it
-with the admin widgets. It will also set the model attribute for you.
+If your view is a subclass of ``ModelFormMixin`` (like ``CreateView``,
+``UpdateView``), ``ExtraViewsMixin`` will wrap the form class with the admin
+center widgets. It will also set the ``model`` attribute if it's not set.

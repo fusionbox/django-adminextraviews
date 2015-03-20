@@ -2,6 +2,7 @@ import pkg_resources
 from functools import partial
 
 from django import forms
+from django.views.generic.edit import ModelFormMixin
 from django.forms.models import modelform_factory
 
 __version__ = pkg_resources.get_distribution('django-adminextraviews').version
@@ -17,7 +18,6 @@ class ExtraViewsMixin(object):
             extra_views = [
                 ('login_as_user', r'(?P<pk>\d+)/login/', LoginAsUserView),
             ]
-
     """
     extra_views = []
 
@@ -28,17 +28,30 @@ class ExtraViewsMixin(object):
         def wrapper(request, *args, **kwargs):
             viewkwargs = {}
 
-            if hasattr(view_class, 'form_class'):
+            # There is no modelform_factory equivalent for plain forms.
+            if issubclass(view_class, ModelFormMixin):
+                # If the view_class doesn't have a model, set it with ours
+                model = view_class.model or self.model
+                form_class = view_class.form_class or forms.ModelForm
+
+                # If the form_class defines the model, use that
+                try:
+                    model = form_class._meta.model or model
+                except AttributeError:
+                    # form_class is ModelForm, ModelForm doesn't have _meta
+                    pass
+
+                # Wrap the form class with the admin widgets
                 Form = modelform_factory(
-                    form=view_class.form_class or forms.ModelForm,
-                    model=self.model,
+                    form=form_class,
+                    model=model,
                     formfield_callback=partial(self.formfield_for_dbfield,
                                                request=request),
                 )
-                viewkwargs['form_class'] = Form
-
-            if hasattr(view_class, 'model'):
-                viewkwargs['model'] = self.model
+                viewkwargs.update(
+                    model=model,
+                    form_class=Form,
+                )
 
             viewfn = view_class.as_view(**viewkwargs)
 
