@@ -6,10 +6,10 @@ Changelog
 1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow for use of different models [#1].
 
 
 1.0.0 (2015-03-19)
 ------------------
 
-* First release on PyPI.
+- First release on PyPI.
