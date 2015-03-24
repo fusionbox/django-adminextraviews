@@ -1,7 +1,7 @@
 django-adminextraviews
 ======================
 
-.. image:: https://travis-ci.org/fusionbox/django-adminextraviews?branch=master
+.. image:: https://travis-ci.org/fusionbox/django-adminextraviews.png?branch=master
     :target: https://travis-ci.org/fusionbox/django-adminextraviews
 
 Mixin for adding class-based views to ModelAdmin.
