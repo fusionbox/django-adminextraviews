@@ -60,6 +60,14 @@ class LogEntryAdmin(ExtraViewsMixin, admin.ModelAdmin):
         ('user-create2', r'^user-create2/$', DifferentModelView2),
     ]
 
+    def get_extra_views(self):
+        return super(LogEntryAdmin, self).get_extra_views() + [
+            ('method', r'^method-view/', self.method),
+        ]
+
+    def method(self, request):
+        return HttpResponse('Method')
+
 
 admin.site.register(admin.models.LogEntry, LogEntryAdmin)
 
@@ -123,3 +131,8 @@ class AdminExtraViewsTestCase(TestCase):
         response = self.client.get(url)
         # LogEntry doesn't have a date_joined field
         self.assertContains(response, 'date_joined')
+
+    def test_supports_methods(self):
+        url = urlresolvers.reverse('admin:admin_logentry_method')
+        response = self.client.get(url)
+        self.assertEquals(response.content, b'Method')
